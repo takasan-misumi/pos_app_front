@@ -8,10 +8,10 @@ export default function Home() {
 
   const handlePostRequest = async () => {
     try {
+      //const response = await fetch(`http://127.0.0.1:8000/api/read?itemCode=${itemCode}`,  {
       const response = await fetch(
-        `http://127.0.0.1:8000/api/read?itemCode=${itemCode}`,
+        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/read?itemCode=${itemCode}`,
         {
-          //const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/read?itemCode=${itemCode}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -20,7 +20,7 @@ export default function Home() {
       );
       // console.log(`Request URL: http://127.0.0.1:8000/api/read?itemCode=${itemCode}`);
       const data = await response.json();
-      // console.log('Response Data:', data);
+      console.log("Response Data:", data);
       setPostResult(data);
     } catch (error) {
       console.error("Error:", error);
@@ -46,23 +46,26 @@ export default function Home() {
     }
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/purchase`, {
-        //const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/purchase`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          items: list,
-          timestamp: new Date().toISOString(), //タイムスタンプ
-          EMP_info: {
-            EMP_CD: "9999999999",
-            STORE_CD: "30",
-            POS_NO: "90",
+      //const response = await fetch(`http://127.0.0.1:8000/api/purchase`, {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/purchase`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
           },
-          totalamt: totalAmount,
-        }),
-      });
+          body: JSON.stringify({
+            items: list,
+            timestamp: new Date().toISOString(), //タイムスタンプ
+            EMP_info: {
+              EMP_CD: "9999999999",
+              STORE_CD: "30",
+              POS_NO: "90",
+            },
+            totalamt: totalAmount,
+          }),
+        }
+      );
       const data = await response.json();
       // console.log('Response Data:', data);
       alert(`購入が完了しました\n\n ${data[0][0]}円`);
