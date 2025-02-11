@@ -20,7 +20,7 @@ export default function Home() {
       );
       // console.log(`Request URL: http://127.0.0.1:8000/api/read?itemCode=${itemCode}`);
       const data = await response.json();
-      console.log("Response Data:", data);
+      //console.log("Response Data:", data);
       setPostResult(data);
     } catch (error) {
       console.error("Error:", error);
